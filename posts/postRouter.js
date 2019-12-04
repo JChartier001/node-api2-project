@@ -101,16 +101,16 @@ router.delete('/:id', (req, res) => {
 router.put('/:id', (req, res) => {  
     const { id } = req.params;
     const changes = req.body;
-    console.log(changes)
+    console.log(changes);
+    console.log(id);
     posts.findById(id)
         .then(post => {            
             if (!changes.title || !changes.contents) {
                 res.status(400).json({ errorMessage: "Please provide title and contents for the post." })
-                } else if (posts.length === 0){
+                } else if (post.length == 0){
                     res.status(404).json({error: 'The post with the specified ID does not exist.'})
                 } else {
-                posts.update(id, changes)
-                console.log(changes)
+                posts.update(id, changes)                
                 .then(post => {
                         res.status(200).json(changes);
                     })
@@ -120,7 +120,9 @@ router.put('/:id', (req, res) => {
             }
             })
         .catch(error => {
+            // console.log(error)
             res.status(500).json({error: 'The comments information could not be retrieved'})
+            
         })      
 });
 
